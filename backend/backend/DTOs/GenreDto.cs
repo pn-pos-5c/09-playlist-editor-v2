@@ -7,7 +7,7 @@ namespace backend.DTOs
 {
     public class GenreDto
     {
-        public int id;
+        public int genreId;
         public string name;
     }
 }

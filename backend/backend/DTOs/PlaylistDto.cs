@@ -7,7 +7,7 @@ namespace backend.DTOs
 {
     public class PlaylistDto
     {
-        public int id;
+        public int playlistId;
         public string name;
     }
 }

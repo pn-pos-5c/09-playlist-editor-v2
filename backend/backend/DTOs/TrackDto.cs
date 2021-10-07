@@ -7,7 +7,7 @@ namespace backend.DTOs
 {
     public class TrackDto
     {
-        public int id;
+        public int trackId;
         public string name;
         public int albumId;
         public int mediaTypeId;

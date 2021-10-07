@@ -50,13 +50,13 @@ namespace backend.Services
         private List<T> ParseCsv<T>(string path)
         {
             List<T> result = new();
-            string[] lines = Regex.Replace(File.ReadAllText(path), "/\r?\r/g", "").Split("\n"); // not replacing everything
+            string[] lines = Regex.Replace(File.ReadAllText(path), "\r", "").Split("\n");
             List<string> headers = new();
 
             for (int i = 0; i < lines.Length; i++)
             {
                 string[] line = lines[i].Split("\",");
-                line = Regex.Replace(string.Join("|", line), "/\"/g", "").Split("|"); // not replacing everything
+                line = Regex.Replace(string.Join("|", line), "\"", "").Split("|");
 
                 if (i == 0)
                 {
@@ -72,8 +72,10 @@ namespace backend.Services
                     Type objType = obj.GetType();
                     bool isNumeric = int.TryParse(line[j], out int num);
 
-                    if (isNumeric) objType.GetProperty(headers[j]).SetValue(obj, num);
-                    else objType.GetProperty(headers[j]).SetValue(obj, line[j]);
+                    var property = objType.GetProperty(headers[j]); // objType has no properties
+
+                    if (isNumeric) property.SetValue(obj, num);
+                    else property.SetValue(obj, line[j]);
                 }
 
                 result.Add(obj);
