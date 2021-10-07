@@ -1,0 +1,13 @@
+<div>
+  Genre:
+  <select (click)="genreChanged()" [(ngModel)]="selectedGenre">
+    <option *ngFor="let genre of genres" [ngValue]="genre">{{genre.name}}</option>
+  </select>
+
+  Track:
+  <select (click)="trackChanged()" [(ngModel)]="selectedTrack">
+    <option *ngFor="let track of tracks" [ngValue]="track">{{track.name}}</option>
+  </select>
+
+  <button (click)="addTrackToPlaylist()" [disabled]="!trackSelected" class="btn btn-success">Add</button>
+</div>
