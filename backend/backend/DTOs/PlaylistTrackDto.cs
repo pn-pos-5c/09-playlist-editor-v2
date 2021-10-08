@@ -7,7 +7,12 @@ namespace backend.DTOs
 {
     public class PlaylistTrackDto
     {
-        public int playlistId;
-        public int trackId;
+        public int playlistId { get; set; }
+        public int trackId { get; set; }
+
+        override public string ToString()
+        {
+            return $"{playlistId}, {trackId}";
+        }
     }
 }

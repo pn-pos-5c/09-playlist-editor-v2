@@ -7,7 +7,12 @@ namespace backend.DTOs
 {
     public class GenreDto
     {
-        public int genreId;
-        public string name;
+        public int genreId { get; set; }
+        public string name { get; set; }
+
+        override public string ToString()
+        {
+            return $"{genreId}, {name}";
+        }
     }
 }

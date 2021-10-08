@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -12,10 +13,10 @@ namespace backend.Services
 {
     public class DatabaseService : IHostedService
     {
-        private static List<GenreDto> genres;
-        private static List<PlaylistDto> playlists;
-        private static List<PlaylistTrackDto> playlistTracks;
-        private static List<TrackDto> tracks;
+        public static List<GenreDto> genres;
+        public static List<PlaylistDto> playlists;
+        public static List<PlaylistTrackDto> playlistTracks;
+        public static List<TrackDto> tracks;
 
         private static List<string> LowerCase(string[] line)
         {
@@ -43,8 +44,6 @@ namespace backend.Services
             playlists = ParseCsv<PlaylistDto>("./Assets/playlist.csv");
             playlistTracks = ParseCsv<PlaylistTrackDto>("./Assets/playlist-track.csv");
             tracks = ParseCsv<TrackDto>("./Assets/track.csv");
-
-            Console.WriteLine(genres);
         }
 
         private List<T> ParseCsv<T>(string path)
@@ -70,17 +69,38 @@ namespace backend.Services
                 for (int j = 0; j < line.Length; j++)
                 {
                     Type objType = obj.GetType();
-                    bool isNumeric = int.TryParse(line[j], out int num);
 
-                    var property = objType.GetProperty(headers[j]); // objType has no properties
+                    var property = objType.GetProperty(headers[j]);
 
-                    if (isNumeric) property.SetValue(obj, num);
+                    if (int.TryParse(line[j], out int numInt))
+                    {
+                        try // for names that can be parsed to int (e.g 1979)
+                        {
+                            property.SetValue(obj, numInt);
+                        }
+                        catch (Exception)
+                        {
+                            property.SetValue(obj, numInt.ToString());
+                        }
+                    }
+                    else if (double.TryParse(line[j], out double numDouble))
+                    {
+                        try // for names that can be parsed to double (e.g. 5.15)
+                        {
+                            property.SetValue(obj, numDouble);
+                        }
+                        catch (Exception)
+                        {
+                            property.SetValue(obj, numDouble.ToString());
+                        }
+                    }
                     else property.SetValue(obj, line[j]);
                 }
 
                 result.Add(obj);
             }
 
+            result.ForEach(x => Debug.WriteLine(x.ToString()));
             return result;
         }
     }
