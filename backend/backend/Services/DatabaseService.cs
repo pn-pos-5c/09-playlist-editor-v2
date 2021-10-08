@@ -13,10 +13,10 @@ namespace backend.Services
 {
     public class DatabaseService : IHostedService
     {
-        public static List<GenreDto> genres;
-        public static List<PlaylistDto> playlists;
-        public static List<PlaylistTrackDto> playlistTracks;
-        public static List<TrackDto> tracks;
+        public static List<GenreDto> Genres { get; set; }
+        public static List<PlaylistDto> Playlists { get; set; }
+        public static List<PlaylistTrackDto> PlaylistTracks { get; set; }
+        public static List<TrackDto> Tracks { get; set; }
 
         private static List<string> LowerCase(string[] line)
         {
@@ -40,10 +40,10 @@ namespace backend.Services
 
         private void ParseAllCsv()
         {
-            genres = ParseCsv<GenreDto>("./Assets/genre.csv");
-            playlists = ParseCsv<PlaylistDto>("./Assets/playlist.csv");
-            playlistTracks = ParseCsv<PlaylistTrackDto>("./Assets/playlist-track.csv");
-            tracks = ParseCsv<TrackDto>("./Assets/track.csv");
+            Genres = ParseCsv<GenreDto>("./Assets/genre.csv");
+            Playlists = ParseCsv<PlaylistDto>("./Assets/playlist.csv");
+            PlaylistTracks = ParseCsv<PlaylistTrackDto>("./Assets/playlist-track.csv");
+            Tracks = ParseCsv<TrackDto>("./Assets/track.csv");
         }
 
         private List<T> ParseCsv<T>(string path)
@@ -100,7 +100,7 @@ namespace backend.Services
                 result.Add(obj);
             }
 
-            result.ForEach(x => Debug.WriteLine(x.ToString()));
+            // result.ForEach(x => Debug.WriteLine(x.ToString()));
             return result;
         }
     }
